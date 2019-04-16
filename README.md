@@ -1,2 +1,2 @@
 # Cisco
-Cisco notes and scripts
+Collection of Cisco notes and scripts
