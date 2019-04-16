@@ -1,0 +1,191 @@
+Enter the commands to configure the name of the router as 'R2'.
+
+Router# configure terminal
+Enter configuration commands, one per line. End with CNTL/Z.
+Router(config)# hostname R2
+
+Configure 'class' as the secret password.
+R2(config)# enable secret class
+
+Configure 'cisco' as the console line password and require users to login. Then exit line configuration mode.
+R2(config)# line console 0
+R2(config-line)# password cisco
+R2(config-line)# login
+R2(config-line)# exit
+
+Configure 'cisco' as the vty password for lines 0 through 4 and require users to login.
+R2(config)# line vty 0 4
+R2(config-line)# password cisco
+R2(config-line)# login
+
+Exit line configuration mode and encrypt all clear text passwords.
+R2(config-line)# exit
+R2(config)# service password-encryption
+
+Enter the banner 'Authorized Access Only!' and use # as the delimiting character.
+R2(config)# banner motd #Authorized Access Only!#
+
+Exit global configuration mode and save the configuration.
+R2(config)# exit
+R2# copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R2#
+You successfully configured R2 with initial settings.
+
+
+
+Configure the GigabitEthernet 0/0 interface with the IP address '10.1.1.1' and subnet mask '255.255.255.0'. 
+Describe the link as 'Link to LAN 3' and activate the interface.
+
+R2(config)# interface gigabitethernet 0/0
+R2(config-if)# ip address 10.1.1.1 255.255.255.0
+R2(config-if)# description Link to LAN 3
+R2(config-if)# no shutdown
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+Configure the GigabitEthernet 0/1 interface with the IP address '10.1.2.1' and subnet mask '255.255.255.0'. 
+Describe the link as 'Link to LAN 4' and activate the interface.
+
+R2(config-if)# interface gigabitethernet 0/1
+R2(config-if)# ip address 10.1.2.1 255.255.255.0
+R2(config-if)# description Link to LAN 4
+R2(config-if)# no shutdown
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+
+Configure the Serial 0/0/0 interface with the IP address '209.165.200.226' and subnet mask '255.255.255.252'. 
+Describe the link as 'Link to R1' and activate the interface.
+
+R2(config-if)# interface Serial 0/0/0
+R2(config-if)# ip address 209.165.200.226 255.255.255.252
+R2(config-if)# description Link to R1
+R2(config-if)# no shutdown
+%LINK-5-CHANGED: Interface Serial0/0/0, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/0/0, changed state to up
+
+You successfully configured the R2 Router interfaces.
+
+
+Configure the GigabitEthernet 0/0 interface with the IPv6 address 2001:db8:acad:4::1/64. 
+Describe the link as 'Link to LAN 3' and activate the interface.
+
+R2(config)# interface gigabitethernet 0/0
+R2(config-if)# ipv6 address 2001:db8:acad:4::1/64
+R2(config-if)# description Link to LAN 3
+R2(config-if)# no shutdown
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+Configure the GigabitEthernet 0/1 interface with the IPv6 address 2001:db8:acad:5::1/64. 
+Describe the link as 'Link to LAN 4' and activate the interface.
+
+R2(config-if)# interface gigabitethernet 0/1
+R2(config-if)# ipv6 address 2001:db8:acad:5::1/64
+R2(config-if)# description Link to LAN 4
+R2(config-if)# no shutdown
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+
+Configure the Serial 0/0/0 interface with the IPv6 address 2001:db8:acad:3::2/64. 
+Describe the link as 'Link to R1' and activate the interface.
+
+R2(config-if)# interface Serial 0/0/0
+R2(config-if)# ipv6 address 2001:db8:acad:3::2/64
+R2(config-if)# description Link to R1
+R2(config-if)# no shutdown
+%LINK-5-CHANGED: Interface Serial0/0/0, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/0/0, changed state to up
+
+You successfully configured the R2 IPv6 Router interfaces.
+
+
+STATIC ROUTES
+
+Configure a default static route using 209.165.200.226 as the next-hop address and exit configuration mode.
+R1(config)# ip route 0.0.0.0 0.0.0.0 209.165.200.226
+R1(config)# exit
+R1# 
+*Feb  1 11:10:29.287: %SYS-5-CONFIG_I: Configured from console by console
+Issue the show ip route command filtering to start the output at the word Gateway.
+R1# show ip route | begin Gateway
+Gateway of last resort is 209.165.200.226 to network 0.0.0.0 
+ 
+S*  0.0.0.0/0 [1/0] via 209.165.200.226 
+    192.168.10.0/24 is variably subnetted, 2 subnets, 2 masks 
+C      192.168.10.0/24 is directly connected, GigabitEthernet0/0 
+L      192.168.10.1/32 is directly connected, GigabitEthernet0/0 
+    192.168.11.0/24 is variably subnetted, 2 subnets, 2 masks 
+C      192.168.11.0/24 is directly connected, GigabitEthernet0/1 
+L      192.168.11.1/32 is directly connected, GigabitEthernet0/1 
+    209.165.200.0/24 is variably subnetted, 2 subnets, 2 masks 
+C      209.165.200.224/30 is directly connected, Serial0/0/0 
+L      209.165.200.225/32 is directly connected, Serial0/0/0 
+R1#
+You successfully configured the default static route on R1.
+
+Configure a static route to the 172.16.3.0/24 using the exit interface/next-hop pair: S0/0/0 / 172.16.2.1.
+R2(config)# ip route 172.16.3.0 255.255.255.0 s0/0/0 172.16.2.1
+Configure a static route to the 192.168.2.0/24 using the exit interface/next-hop pair: S0/0/1 / 192.168.1.1.
+R2(config)# ip route 192.168.2.0 255.255.255.0 s0/0/1 192.168.1.1
+Exit configuration mode and display the routing table.
+R2(config)# exit
+*Feb 21 18:04:37.207: %SYS-5-CONFIG_I: Configured from console by console
+R2# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, 
+       B - BGP, D - EIGRP, EX - EIGRP external, O - OSPF, 
+       IA - OSPF inter area, N1 - OSPF NSSA external type 1, 
+       N2 - OSPF NSSA external type 2, E1 - OSPF external type 1, 
+       E2 - OSPF external type 2, i - IS-IS, su - IS-IS summary, 
+       L1 - IS-IS level-1, L2 - IS-IS level-2, 
+       ia - IS-IS inter area, * - candidate default, 
+       U - per-user static route o - ODR, 
+       P - periodic downloaded static route, H - NHRP, l - LISP, 
+       + - replicated route, % - next hop override 
+ 
+Gateway of last resort is not set 
+ 
+    172.16.0.0/16 is variably subnetted, 5 subnets, 2 masks 
+C      172.16.1.0/24 is directly connected, GigabitEthernet0/0 
+L      172.16.1.1/32 is directly connected, GigabitEthernet0/0 
+C      172.16.2.0/24 is directly connected, Serial0/0/0 
+L      172.16.2.2/32 is directly connected, Serial0/0/0 
+S      172.16.3.0/24 [1/0] via 172.16.2.1, Serial0/0/0 
+    192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks 
+C      192.168.1.0/24 is directly connected, Serial0/0/1 
+L      192.168.1.2/32 is directly connected, Serial0/0/1 
+S   192.168.2.0/24 [1/0] via 192.168.1.1, Serial0/0/1
+R2#
+You successfully configured the fully specified static routes on R2.
+
+switch SSH configuration
+
+Set the domain name to cisco.com and generate the 1024 bit rsa key.
+
+S1(config)# ip domain-name cisco.com
+S1(config)# crypto key generate rsa
+The name for the keys will be: S1.cisco.com 
+Choose the size of the key modulus in the range of 360 to 4096 for your General Purpose Keys. Choosing a key modulus greater than 512 may take a few minutes. 
+ 
+How many bits in the modulus [512]: 1024
+% Generating 1024 bit RSA keys, keys will be non-exportable... 
+[OK] (elapsed time was 4 seconds) 
+ 
+S1(config)# 
+*Mar 1 02:20:18.529: %SSH-5-ENABLED: SSH 1.99 has been enabled 
+Create a local user 'admin' with the password 'ccna'. Set all vty lines to use ssh and local login for remote connections. Exit out to global configuration mode.
+
+S1(config)# username admin secret ccna
+S1(config)# line vty 0 15
+S1(config-line)# transport input ssh
+S1(config-line)# login local
+S1(config-line)# end
+S1#
+%SYS-5-CONFIG_I: Configured from console by console
+Configure S1 to use SSH 2.0.
+S1(config)# ip ssh version 2
+S1(config)#
+
+You successfully configured SSH on all VTY lines.

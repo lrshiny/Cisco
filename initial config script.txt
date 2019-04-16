@@ -1,0 +1,33 @@
+enable
+conf t
+no ip domain-lookup
+
+hostname S1
+enable secret class
+
+line console 0
+password cisco
+login
+logging synchronous
+exit
+
+username admin secret cisco
+line vty 0 4
+transport input ssh
+login local
+exit
+
+ip domain-name class.com
+crypto key generate rsa
+1024
+
+ip ssh version 2
+
+service password-encryption
+banner motd # Unauthorized Access Strictly Prohibited. #
+
+
+exit
+copy running-conf startup-conf
+
+

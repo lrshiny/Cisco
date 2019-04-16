@@ -1,0 +1,16 @@
+Access Control Lists (ACL)
+
+Configure the vty lines to accept incoming ssh connections using access list 21.
+
+R1(config)# line vty 0 4
+R1(config-line)# login local
+R1(config-line)# transport input ssh
+R1(config-line)# access-class 21 in
+
+Exit to global mode and create access list 21 to permit the 192.168.10.0/24 network and explicitly deny all others.
+
+R1(config-line)# exit
+R1(config)# access-list 21 permit 192.168.10.0 0.0.0.255
+R1(config)# access-list 21 deny any
+
+You successfully secured the vty lines on R1.

@@ -1,0 +1,161 @@
+ip nat pool PUBLIC 172.217.0.10 172.217.0.100 netmask 255.255.0.0
+access-list 2 permit 192.168.0.0 0.0.255.255
+ip nat inside source list 2 pool PUBLIC
+
+int g0/1
+ip nat inside
+exit
+
+int g0/0
+ip nat outside
+end
+
+copy running-conf startup-conf 
+
+
+
+
+
+
+
+
+***************************** STATIC NAT ******************************
+ip nat inside source static (local IP) (Global IP)
+interface serial (inside interface)
+ip nat inside
+exit
+
+interface serial (outside interface)
+ip nat outside
+exit
+
+show ip nat translations
+show ip nat statistics
+clear ip nat statistics
+
+
+
+Configure the static translation with an inside local address of 192.168.11.99 and an inside global address of 209.165.201.5.
+        
+R2(config)# ip nat inside source static 192.168.11.99 209.165.201.5
+
+
+Configure the proper  inside NAT interface.
+
+R2(config)# interface Serial0/0/0
+            
+R2(config-if)# ip nat inside
+
+
+Configure the proper outside NAT interface.
+            
+R2(config)# interface Serial0/1/0
+            
+R2(config-if)# ip nat outside 
+
+
+You successfully configured static NAT.
+
+***************************** DYNAMIC NAT **************************
+
+ip nat pool (POOLNAME) (low IP address) (high IP address) netmask (NETMASK)
+access-list (2) permit (inside netrwork) (inside wildcard mask)
+ip nat inside source list (2) pool (POOLNAME)
+
+int (inside)
+ip nat inside
+exit
+
+int (outside)
+ip nat outside
+exit
+
+show ip nat translations
+show ip nat translations verbose
+ip nat translation timeout
+clear ip nat translation *
+
+
+Define a pool of public IPv4 addresses 209.165.200.241 to 209.165.200.250 with pool name PUBLIC-POOL.
+
+R2(config)# ip nat pool PUBLIC-POOL 209.165.200.241 209.165.200.250 netmask 255.255.255.224
+
+
+Configure ACL 2 to permit devices from 192.168.10.0/24 network to be translated by NAT.
+
+R2(config)# access-list 2 permit 192.168.10.0 0.0.0.255
+
+
+Bind PUBLIC-POOL with ACL 2.
+
+R2(config)# ip nat inside source list 2 pool PUBLIC-POOL
+
+
+Configure the proper inside NAT interface.
+
+R2(config)# interface Serial0/0/0
+R2(config-if)# ip nat inside
+
+
+Configure the proper outside NAT interface.
+
+R2(config)# interface Serial0/1/0
+R2(config-if)# ip nat outside
+
+
+You successfully configured dynamic NAT.
+
+***********************PAT*******************
+
+Define a pool of public IPv4 addresses 209.165.200.241 to 209.165.200.250 with pool name NAT-POOL-OVERLOAD.
+        
+R2(config)# ip nat pool NAT-POOL-OVERLOAD 209.165.200.241 209.165.200.250 netmask 255.255.255.224
+
+            
+Configure ACL 3 to permit devices from 10.0.0.0/8 network to be translated by NAT.
+            
+R2(config)# access-list 3 permit 10.0.0.0 0.255.255.255
+            
+Bind NAT-POOL-OVERLOAD with ACL 3.
+            
+R2(config)# ip nat inside source list 3 pool NAT-POOL-OVERLOAD overload
+            
+Configure the proper inside NAT interface.
+            
+R2(config)# interface Serial0/0/0
+            
+R2(config-if)# ip nat inside
+            
+Configure the proper outside NAT interface.
+            
+R2(config)# interface Serial0/1/0
+            
+R2(config-if)# ip nat outside
+            
+You successfully configured PAT using an Address Pool.
+
+
+Identify the outside interface serial0/1/0 as the inside global address to be overloaded using ACL 1.
+
+R2(config)# ip nat inside source list 1 interface serial 0/1/0 overload
+
+
+Configure ACL 1 to permit devices from 192.168.0.0/16 network to be translated by NAT.
+
+R2(config)# access-list 1 permit 192.168.0.0 0.0.255.255
+
+
+Configure the proper inside NAT interface.
+
+R2(config)# interface serial0/0/0
+R2(config-if)# ip nat inside
+
+
+Configure the proper outside NAT interface.
+
+R2(config)# interface serial0/1/0
+R2(config-if)# ip nat outside
+
+
+You successfully configured PAT using a single address.
+            

@@ -1,0 +1,296 @@
+show running-config 
+show interfaces 
+show arp 
+show ip route 
+show protocols 
+show version 
+show ip interface brief
+
+
+
+
+Enter the command to verify the gigabitethernet 0/0 interface settings.
+R1# show interface gigabitethernet 0/0
+GigabitEthernet0/0 is up, line protocol is up
+  Hardware is CN Gigabit Ethernet, address is fc99.4775.c3e0 (bia fc99.4775.c3e0)
+  Description: Link to LAN 1
+  Internet address is 192.168.10.1/24
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+ Keepalive set (10 sec)
+  Full Duplex, 100Mbps, media type is RJ45
+  output flow-control is
+unsupported, input flow-control is unsupported
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:05:21, output 00:00:00, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     329 packets input, 70930 bytes, 0 no buffer
+     Received 298 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles 
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     437 packets output, 47524 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     30 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+R1#
+
+Enter the command to verify the gigabitethernet 0/1 interface settings.
+R1# show interface gigabitethernet 0/1
+GigabitEthernet0/1 is up, line protocol is up 
+  Hardware is CN Gigabit Ethernet, address is fc99.4775.c3e1 (bia fc99.4775.c3e1)
+  Description: Link to LAN 2
+  Internet address is 192.168.11.1/24
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+ Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 100Mbps, media type is RJ45
+  output flow-control is unsupported, input flow-control is unsupported
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:11, output 00:00:02, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     614 packets input, 125730 bytes, 0 no buffer
+     Received 585 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles 
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 306 multicast, 0 pause input
+     717 packets output, 77198 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     228 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+R1#
+
+Enter the command to verify the Serial 0/0/0 interface settings.
+R1# show interface Serial 0/0/0
+Serial0/0/0 is up, line protocol is up 
+  Hardware is WIC MBRD Serial
+  Description: Link to R2
+  Internet address is 209.165.200.225/30
+  MTU 1500 bytes, BW 1544 Kbit/sec, DLY 20000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation HDLC, loopback not set
+  Keepalive set (10 sec)
+  Last input 00:00:03, output 00:00:02, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     714 packets input, 52752 bytes, 0 no buffer
+     Received 714 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles 
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+     714 packets output, 53070 bytes, 0 underruns
+     0 output errors, 0 collisions, 3 interface resets
+     0 unknown protocol drops
+     0 output buffer failures, 0 output buffers swapped out
+     1 carrier transitions
+     DCD=up  DSR=up  DTR=up  RTS=up  CTS=up
+R1#
+You successfully verifed the router interface settings.
+
+
+Enter the 'show ip interface' command to verify the gigabitethernet 0/0 IP interface settings.
+R1# show ip interface gigabitethernet 0/0
+GigabitEthernet0/0 is up, line protocol is up
+  Internet address is 192.168.10.1/24
+  Broadcast address is 255.255.255.255
+  Address determined by setup command
+  MTU is 1500 bytes
+  Helper address is not set
+  Directed broadcast forwarding is disabled
+  Outgoing access list is not set
+  Inbound  access list is not set
+  Proxy ARP is enabled
+  Local Proxy ARP is disabled
+  Security level is default
+  Split horizon is enabled
+  ICMP redirects are always sent
+  ICMP unreachables are always sent
+  ICMP mask replies are never sent
+  IP fast switching is enabled
+  IP fast switching on the same interface is disabled
+  IP Flow switching is disabled
+  IP CEF switching is enabled
+  IP CEF switching turbo vector
+  IP multicast fast switching is enabled
+  IP multicast distributed fast switching is disabled
+  IP route-cache flags are Fast, CEF
+  Router Discovery is disabled
+  IP output packet accounting is disabled
+  IP access violation accounting is disabled
+  TCP/IP header compression is disabled
+  RTP/IP header compression is disabled
+  Policy routing is disabled
+  Network address translation is disabled
+  BGP Policy Mapping is disabled
+  Input features: MCI Check
+  IPv4 WCCP Redirect outbound is disabled
+  IPv4 WCCP Redirect inbound is disabled
+  IPv4 WCCP Redirect exclude is disabled
+R1#
+
+Enter the 'show ip interface' command to verify the gigabitethernet 0/1 IP interface settings.
+R1# show ip interface gigabitethernet 0/1
+GigabitEthernet0/1 is up, line protocol is up
+  Internet address is 192.168.11.1/24
+  Broadcast address is 255.255.255.255
+  Address determined by setup command
+  MTU is 1500 bytes
+  Helper address is not set
+  Directed broadcast forwarding is disabled
+  Outgoing access list is not set
+  Inbound  access list is not set
+  Proxy ARP is enabled
+  Local Proxy ARP is disabled
+  Security level is default
+  Split horizon is enabled
+  ICMP redirects are always sent
+  ICMP unreachables are always sent
+  ICMP mask replies are never sent
+  IP fast switching is enabled
+  IP fast switching on the same interface is disabled
+  IP Flow switching is disabled
+  IP CEF switching is enabled
+  IP CEF switching turbo vector
+  IP multicast fast switching is enabled
+  IP multicast distributed fast switching is disabled
+  IP route-cache flags are Fast, CEF
+  Router Discovery is disabled
+  IP output packet accounting is disabled
+  IP access violation accounting is disabled
+  TCP/IP header compression is disabled
+  RTP/IP header compression is disabled
+  Policy routing is disabled
+  Network address translation is disabled
+  BGP Policy Mapping is disabled
+  Input features: MCI Check
+  IPv4 WCCP Redirect outbound is disabled
+  IPv4 WCCP Redirect inbound is disabled
+  IPv4 WCCP Redirect exclude is disabled
+R1#
+
+Enter the 'show ip interface' command to verify the Serial 0/0/0 IP interface settings.
+R1# show ip interface Serial 0/0/0
+Serial0/0/0 is up, line protocol is up
+  Internet address is 209.165.200.225/30
+  Broadcast address is 255.255.255.255
+  Address determined by setup command
+  MTU is 1500 bytes
+  Helper address is not set
+  Directed broadcast forwarding is disabled
+  Outgoing access list is not set
+  Inbound  access list is not set
+  Proxy ARP is enabled
+  Local Proxy ARP is disabled
+  Security level is default
+  Split horizon is enabled
+  ICMP redirects are always sent
+  ICMP unreachables are always sent
+  ICMP mask replies are never sent
+  IP fast switching is enabled
+  IP fast switching on the same interface is enabled
+  IP Flow switching is disabled
+  IP CEF switching is enabled
+  IP CEF switching turbo vector
+  IP multicast fast switching is enabled
+  IP multicast distributed fast switching is disabled
+  IP route-cache flags are Fast, CEF
+  Router Discovery is disabled
+  IP output packet accounting is disabled
+  IP access violation accounting is disabled
+  TCP/IP header compression is disabled
+  RTP/IP header compression is disabled
+  Policy routing is disabled
+  Network address translation is disabled
+  BGP Policy Mapping is disabled
+  Input features: MCI Check
+  IPv4 WCCP Redirect outbound is disabled
+  IPv4 WCCP Redirect inbound is disabled
+  IPv4 WCCP Redirect exclude is disabled
+R1#
+You successfully verifed the router IP interface settings.
+
+
+FILTERING
+
+Enter the command to filter the show running-config output for the 'line con' section.
+R1# show running-config | section line con
+line con 0
+ password 7 110A1016141D
+ login
+
+Enter the command to filter for 'down' interfaces in the brief listing.
+R1# show ip interface brief | include down
+Interface                  IP-Address OK? Method Status                Protocol
+Embedded-Service-Engine0/0 unassigned YES unset  administratively down down
+Serial0/0/1                unassigned YES unset  administratively down down
+
+Enter the command to exclude 'up' interfaces in the brief listing.
+R1# show ip interface brief | exclude up
+Interface                  IP-Address OK? Method Status                Protocol
+Embedded-Service-Engine0/0 unassigned YES unset  administratively down down
+Serial0/0/1                unassigned YES unset  administratively down down
+
+Enter the command to filter the show running-config output to begin at the word 'line'.
+R1# show running-config | begin line
+line con 0 
+ password 7 110A1016141D 
+ login 
+line aux 0 
+line 2 
+ no activation-character 
+ no exec 
+ transport preferred none 
+ transport input all 
+ transport output pad telnet rlogin lapb-ta mop udptn v120 
+ssh 
+ stopbits 1 
+line vty 0 4 
+ password 7 030752180500 
+ login 
+ transport input all 
+!  
+scheduler allocate 20000 1000 
+!  
+end 
+ 
+R1# 
+You successfully executed the filtered show commands.
+
+
+HISTORY
+
+Enter the command to set the number of lines in command history to 200.
+R1# terminal history size 200
+
+Enter the command to display command history.
+R1# show history
+  show ip interface brief 
+  show interface g0/0 
+  show ip interface g0/1 
+  show ip route 
+  show ip route 209.165.200.224 
+  show running-config interface s0/0/0 
+  terminal history size 200 
+  show history 
+R1#
+You successfully set and displayed command history.
+

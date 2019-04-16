@@ -1,0 +1,443 @@
+enable
+conf t
+router rip
+version 2
+!fix network addresses
+network 172.16.0.0
+network 172.16.64.0
+network 192.168.0.0
+no auto-summary
+passive-interface g0/0
+passive-interface g0/1
+!default-information originate
+
+
+
+Configure RIP on R2 to advertise the appropriate networks based on the topology. Start with the lowest IP network.
+
+R2(config)# router rip
+R2(config-router)# network 192.168.2.0
+R2(config-router)# network 192.168.3.0
+R2(config-router)# network 192.168.4.0
+
+You are now logged into R3. Advertise the RIP networks for R3. Start with the lowest IP network.
+
+R3(config)# router rip
+R3(config-router)# network 192.168.4.0
+R3(config-router)# network 192.168.5.0
+You successfully configured the networks for R2 and R3.
+
+Verify the networks being advertised in RIP on router R2.
+R2# show ip protocols
+*** IP Routing is NSF aware *** 
+ 
+Routing Protocol is "rip" 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Sending updates every 30 seconds, next due in 16 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Redistributing: rip 
+  Default version control: send version 1, receive any version 
+    Interface           Send  Recv  Triggered RIP  Key-chain 
+    GigabitEthernet0/0   1    1 2 
+    Serial0/0/0          1    1 2
+    Serial0/0/1          1    1 2 
+  Automatic network summarization is in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.2.0 
+    192.168.3.0 
+    192.168.4.0 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.2.1          120      00:00:13 
+    192.168.4.1          120      00:00:22 
+  Distance: (default is 120)
+Display the routing table on R2.
+R2# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP 
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2 
+       E1 - OSPF external type 1, E2 - OSPF external type 2 
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2 
+       ia - IS-IS inter area, * - candidate default, U - per-user static route 
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP 
+       + - replicated route, % - next hop override 
+ 
+Gateway of last resort is not set 
+ 
+R     192.168.1.0/24 [120/1] via 192.168.2.1, 00:00:20, Serial0/0/0 
+      192.168.2.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.2.0/24 is directly connected, Serial0/0/0 
+L        192.168.2.2/32 is directly connected, Serial0/0/0 
+      192.168.3.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.3.0/24 is directly connected, GigabitEthernet0/0 
+L        192.168.3.1/32 is directly connected, GigabitEthernet0/0 
+      192.168.4.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.4.0/24 is directly connected, Serial0/0/1 
+L        192.168.4.2/32 is directly connected, Serial0/0/1 
+R     192.168.5.0/24 [120/1] via 192.168.4.1, 00:00:01, Serial0/0/1 
+R2#
+You are now logged into R3. Verify the networks being advertised in RIP on router R3.
+R3# show ip protocols
+Routing Protocol is "rip" 
+  Sending updates every 30 seconds, next due in 10 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Redistributing: rip 
+  Default version control: send version 1, receive any version 
+    Interface           Send  Recv  Triggered RIP  Key-chain 
+    GigabitEthernet0/0   1    2 1 
+    Serial0/0/1          1    2 1
+  Automatic network summarization is in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.4.0 
+    192.168.5.0 
+  Passive Interface(s): 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.4.2          120      00:00:14 
+  Distance: (default is 120)
+Display the routing table on R3.
+R3# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP 
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2 
+       E1 - OSPF external type 1, E2 - OSPF external type 2 
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2 
+       ia - IS-IS inter area, * - candidate default, U - per-user static route 
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP 
+       + - replicated route, % - next hop override 
+ 
+Gateway of last resort is not set 
+ 
+R     192.168.1.0/24 [120/2] via 192.168.4.2, 00:00:02, Serial0/0/1 
+R     192.168.2.0/24 [120/1] via 192.168.4.2, 00:00:02, Serial0/0/1 
+R     192.168.3.0/24 [120/1] via 192.168.4.2, 00:00:02, Serial0/0/1 
+      192.168.4.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.4.0/24 is directly connected, Serial0/0/1 
+L        192.168.4.1/32 is directly connected, Serial0/0/1 
+      192.168.5.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.5.0/24 is directly connected, GigabitEthernet0/0 
+L        192.168.5.1/32 is directly connected, GigabitEthernet0/0 
+R3#
+You successfully verified RIP settings and routes on R2 and R3.
+
+Enable RIP version 2 on R2 and return to privileged EXEC mode.
+R2(config)# router rip
+R2(config-router)# version 2
+R2(config-router)# end
+R2#
+*Mar 10 13:48:38.951: %SYS-5-CONFIG_I: Configured from console by console
+Verify the RIP protocol settings on R2.
+R2# show ip protocols
+*** IP Routing is NSF aware *** 
+ 
+Routing Protocol is "rip" 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Sending updates every 30 seconds, next due in 26 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Redistributing: rip 
+  Default version control: send version 2, receive version 2 
+    Interface             Send  Recv  Triggered RIP  Key-chain 
+    GigabitEthernet0/0    2     2
+    Serial0/0/0           2     2
+    Serial0/0/1           2     2
+  Automatic network summarization is in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.2.0 
+    192.168.3.0 
+    192.168.4.0 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.2.1          120      00:00:19 
+    192.168.4.1          120      00:00:22 
+  Distance: (default is 120)
+
+Display the routing table on R2.
+R2# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, 
+B - BGP 
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF 
+inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external 
+type 2 
+       E1 - OSPF external type 1, E2 - OSPF external type 2 
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - 
+IS-IS level-2 
+       ia - IS-IS inter area, * - candidate default, U - per-
+user static route 
+       o - ODR, P - periodic downloaded static route, H - NHRP, 
+l - LISP 
+       + - replicated route, % - next hop override 
+ 
+Gateway of last resort is not set 
+ 
+R     192.168.1.0/24 [120/1] via 192.168.2.1, 00:00:03, Serial0/0/0 
+      192.168.2.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.2.0/24 is directly connected, Serial0/0/0 
+L        192.168.2.2/32 is directly connected, Serial0/0/0 
+      192.168.3.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.3.0/24 is directly connected, GigabitEthernet0/0 
+L        192.168.3.1/32 is directly connected, GigabitEthernet0/0 
+      192.168.4.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.4.0/24 is directly connected, Serial0/0/1 
+L        192.168.4.2/32 is directly connected, Serial0/0/1 
+R2#
+
+You are now logged into R3. Enable RIP version 2 on R3 and return to privileged EXEC mode.
+R3(config)# router rip
+R3(config-router)# version 2
+R3(config-router)# end
+R3#
+*Mar 10 13:50:17.359: %SYS-5-CONFIG_I: Configured from console by console
+Verify the RIP protocol settings on R3.
+R3# show ip protocols
+*** IP Routing is NSF aware *** 
+ 
+Routing Protocol is "rip" 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Sending updates every 30 seconds, next due in 18 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Redistributing: rip 
+  Default version control: send version 2, receive version 2 
+    Interface             Send  Recv  Triggered RIP  Key-chain 
+    GigabitEthernet0/0    2     2
+    Serial0/0/1           2     2
+  Automatic network summarization is in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.4.0 
+    192.168.5.0 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.4.2          120      00:00:20 
+  Distance: (default is 120)
+Display the routing table on R3.
+R3# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M -
+ mobile, B - BGP 
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter 
+area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external 
+type 2 
+       E1 - OSPF external type 1, E2 - OSPF external type 2 
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - 
+IS-IS level-2 
+       ia - IS-IS inter area, * - candidate default, U - per-
+user static route 
+       o - ODR, P - periodic downloaded static route, H - NHRP, 
+l - LISP 
+       + - replicated route, % - next hop override 
+ 
+Gateway of last resort is not set 
+ 
+R     192.168.1.0/24 [120/2] via 192.168.4.2, 00:00:03, Serial0/0/1 
+R     192.168.2.0/24 [120/1] via 192.168.4.2, 00:00:03, Serial0/0/1 
+R     192.168.3.0/24 [120/1] via 192.168.4.2, 00:00:03, Serial0/0/1 
+      192.168.4.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.4.0/24 is directly connected, Serial0/0/1 
+L        192.168.4.1/32 is directly connected, Serial0/0/1 
+      192.168.5.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.5.0/24 is directly connected, GigabitEthernet0/0 
+L        192.168.5.1/32 is directly connected, GigabitEthernet0/0 
+R3#
+
+Disable automatic summarization on R2 and return to privileged EXEC mode.
+R2(config)# router rip
+R2(config-router)# no auto-summary
+R2(config-router)# end
+R2#
+*Mar 10 14:16:10.439: %SYS-5-CONFIG_I: Configured from console by console
+Verify the RIP protocol settings on R2.
+R2# show ip protocols
+*** IP Routing is NSF aware *** 
+ 
+Routing Protocol is "rip" 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Sending updates every 30 seconds, next due in 19 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Redistributing: rip 
+  Default version control: send version 2, receive version 2 
+    Interface             Send  Recv  Triggered RIP  Key-chain 
+    GigabitEthernet0/0    2     2                                    
+    Serial0/0/0           2     2                                    
+    Serial0/0/1           2     2                                    
+  Automatic network summarization is not in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.2.0 
+    192.168.3.0 
+    192.168.4.0 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.2.1          120      00:00:09 
+    192.168.4.1          120      00:00:01 
+  Distance: (default is 120)
+R2#
+You are now logged into R3. Disable automatic summarization on R3 and return to privileged EXEC mode.
+R3(config)# router rip
+R3(config-router)# no auto-summary
+R3(config-router)# end
+R3#
+*Mar 10 14:17:06.059: %SYS-5-CONFIG_I: Configured from console by console
+Verify the RIP protocol settings on R3.
+R3# show ip protocols
+*** IP Routing is NSF aware *** 
+ 
+Routing Protocol is "rip" 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Sending updates every 30 seconds, next due in 11 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Redistributing: rip 
+  Default version control: send version 2, receive version 2 
+    Interface             Send  Recv  Triggered RIP  Key-chain 
+    GigabitEthernet0/0    2     2                                    
+    Serial0/0/1           2     2                                    
+  Automatic network summarization is not in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.4.0 
+    192.168.5.0 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.4.2          120      00:00:26 
+  Distance: (default is 120) 
+R3#
+
+Configure passive interface on G0/0 and return to privileged EXEC mode.
+R2(config)# router rip
+R2(config-router)# passive-interface g0/0
+R2(config-router)# end
+R2#
+*Mar 10 16:33:32.391: %SYS-5-CONFIG_I: Configured from console by console
+Verify the RIP protocol settings on R2.
+R2# show ip protocols
+*** IP Routing is NSF aware *** 
+ 
+Routing Protocol is "rip" 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Sending updates every 30 seconds, next due in 17 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Redistributing: rip 
+  Default version control: send version 2, receive version 2 
+    Interface             Send  Recv  Triggered RIP  Key-chain 
+    Serial0/0/0           2     2
+    Serial0/0/1           2     2
+  Automatic network summarization is not in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.2.0 
+    192.168.3.0 
+    192.168.4.0 
+  Passive Interface(s): 
+    GigabitEthernet0/0 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.2.1          120      00:00:24 
+    Gateway         Distance      Last Update 
+    192.168.4.1          120      00:00:23 
+  Distance: (default is 120)
+R2#
+You are now logged into R3. Configure passive interface to be the default setting. Remove the passive interface setting from S0/0/1 and return to privileged EXEC mode.
+R3(config)# router rip
+R3(config-router)# passive-interface default
+R3(config-router)# no passive-interface s0/0/1
+R3(config-router)# end
+R3#
+*Mar 10 16:34:28.899: %SYS-5-CONFIG_I: Configured from console by console
+Verify the RIP protocol settings on R3.
+R3# show ip protocols
+*** IP Routing is NSF aware *** 
+ 
+Routing Protocol is "rip" 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Sending updates every 30 seconds, next due in 15 seconds 
+  Invalid after 180 seconds, hold down 180, flushed after 240 
+  Redistributing: rip 
+  Default version control: send version 2, receive version 2 
+    Interface             Send  Recv  Triggered RIP  Key-chain 
+    Serial0/0/1           2     2
+  Automatic network summarization is not in effect 
+  Maximum path: 4 
+  Routing for Networks: 
+    192.168.4.0 
+    192.168.5.0 
+  Passive Interface(s): 
+    Embedded-Service-Engine0/0 
+    GigabitEthernet0/0 
+    GigabitEthernet0/1 
+    GigabitEthernet0/3 
+    Serial0/0/0 
+    RG-AR-IF-INPUT1 
+  Routing Information Sources: 
+    Gateway         Distance      Last Update 
+    192.168.4.2          120      00:00:23 
+  Distance: (default is 120) 
+R3#
+You successfully configured and verified passive interface on R2 and R3.
+
+Verify the gateway of last resort on R2.
+R2# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP 
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2 
+       E1 - OSPF external type 1, E2 - OSPF external type 2 
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2 
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override
+ 
+Gateway of last resort is 192.168.2.1 to network 0.0.0.0
+ 
+R*    0.0.0.0/0 [120/1] via 192.168.2.1, 00:00:21, Serial0/0/0
+R     192.168.1.0/24[120/1] via 192.168.2.1, 00:00:25, Serial0/0/0
+      192.168.2.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.2.0/24 is directly connected, Serial0/0/0
+L        192.168.2.2/32 is directly connected, Serial0/0/0
+      192.168.3.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.3.0/24 is directly connected, GigabitEthernet0/0
+L        192.168.3.1/32 is directly connected, GigabitEthernet0/0 
+      192.168.4.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.4.0/24 is directly connected, Serial0/0/1
+L        192.168.4.2/32 is directly connected, Serial0/0/1 
+R     192.168.5.0/24 [120/1] via 192.168.4.1, 00:00:15, Serial0/0/1 
+R2#
+ 
+You are now logged into R3. Verify the gateway of last resort on R3.
+R3# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP 
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2 
+       E1 - OSPF external type 1, E2 - OSPF external type 2 
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2 
+       ia - IS-IS inter area, * - candidate default, U - per-user static route 
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP 
+       + - replicated route, % - next hop override 
+ 
+Gateway of last resort is 192.168.4.2 to network 0.0.0.0 
+ 
+R*    0.0.0.0/0 [120/2] via 192.168.4.2, 00:00:00, Serial0/0/1 
+R     192.168.1.0/24 [120/2] via 192.168.4.2, 00:00:00, 
+Serial0/0/1 
+R     192.168.2.0/24 [120/1] via 192.168.4.2, 00:00:00, 
+Serial0/0/1 
+R     192.168.3.0/24 [120/1] via 192.168.4.2, 00:00:00, 
+Serial0/0/1 
+      192.168.4.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.4.0/24 is directly connected, Serial0/0/1 
+L        192.168.4.1/32 is directly connected, Serial0/0/1 
+      192.168.5.0/24 is variably subnetted, 2 subnets, 2 masks 
+C        192.168.5.0/24 is directly connected, GigabitEthernet0/0 
+L        192.168.5.1/32 is directly connected, GigabitEthernet0/0 
+R3#
+You successfully configured and verified the gateway of last resort on R2 and R3.
